@@ -1,85 +1,61 @@
 <h1 align="center">
-Vault Signed SSH Certificate Manager
+Bitwarden SSH Manager
 </h1>
 
 <p align="center">
-    <img src="https://img.shields.io/github/workflow/status/omegion/vault-ssh/Code%20Check" alt="Check"></a>
-    <img src="https://coveralls.io/repos/github/omegion/vault-ssh/badge.svg?branch=master" alt="Coverall"></a>
-    <img src="https://goreportcard.com/badge/github.com/omegion/vault-ssh" alt="Report"></a>
-    <a href="http://pkg.go.dev/github.com/omegion/vault-ssh"><img src="https://img.shields.io/badge/pkg.go.dev-doc-blue" alt="Doc"></a>
-    <a href="https://github.com/omegion/vault-ssh/blob/master/LICENSE"><img src="https://img.shields.io/github/license/omegion/vault-ssh" alt="License"></a>
+  <a href="https://omegion.github.io/bw-ssh-docs/" target="_blank">
+    <img width="180" src="https://omegion.github.io/bw-ssh-docs/img/logo.svg" alt="logo">
+  </a>
+</p>
+
+<p align="center">
+    <img src="https://img.shields.io/github/workflow/status/omegion/bw-ssh/Code%20Check" alt="Check"></a>
+    <img src="https://coveralls.io/repos/github/omegion/bw-ssh/badge.svg?branch=master" alt="Coverall"></a>
+    <img src="https://goreportcard.com/badge/github.com/omegion/bw-ssh" alt="Report"></a>
+    <a href="http://pkg.go.dev/github.com/omegion/bw-ssh"><img src="https://img.shields.io/badge/pkg.go.dev-doc-blue" alt="Doc"></a>
+    <a href="https://github.com/omegion/bw-ssh/blob/master/LICENSE"><img src="https://img.shields.io/github/license/omegion/bw-ssh" alt="License"></a>
 </p>
 
 ```shell
-CLI command to manage SSH connections with Vault
+CLI command to manage SSH keys stored on Bitwarden
 
 Usage:
-  vault-ssh [command]
+  bw-ssh [command]
 
 Available Commands:
-  certificate Manages certificates for SSH engine.
-  enable      Enables SSH Engine.
+  add         Add SSH key to Bitwarden.
+  get         Get SSH key from Bitwarden.
   help        Help about any command
-  role        Manages roles for SSH engine.
-  sign        Signs given public key with SSH engine and role.
   version     Print the version/build number
 
 Flags:
-  -h, --help   help for vault-ssh
+  -h, --help   help for bw-ssh
 
-Use "vault-ssh [command] --help" for more information about a command.
+Use "bw-ssh [command] --help" for more information about a command.
+
 ```
 
 ## Requirements
 
-* Vault Server
+* Have the [Bitwarden CLI tool](https://github.com/bitwarden/cli) installed and available in the `$PATH` as `bw`.
+* Have the `ssh-agent` running in the current session.
 
 ## What does it do?
 
-It's a tool to create Signed SSH Certificates with Vault.
+Injects SSL keys to `ssh-agent` stored in Bitwarden.
 
 ## How to use it
 
-1. Enable a SSH engine in your Vault.
+1. Login to Bitwarden with `bw`.
+1. Create a folder named `SSHKeys` folder in your Bitwarden.
+1. Add your key pairs to Bitwarden
 
 ```shell
-vault-ssh enable --path my-ssh-signer
-```
-
-2. Generate a Certificate CA for the engine.
-
-```shell
-vault-ssh certificate create --engine my-ssh-signer
-```
-
-3. Read created certificate to put on your server.
-
-```shell
-vault-ssh certificate read --engine my-ssh-signer
-```
-
-4. Create a role for the engine.
-
-```shell
-vault-ssh role create --name omegion --engine my-ssh-signer
-```
-
-5. Sign your public key with a role. The generated file will be written in `signed-key.pub` in this example.
-
-```shell
-vault-ssh sign \
-  --role omegion \
-  --engine my-ssh-signer \
-  --public-key ~/.ssh/id_rsa.pub > signed-key.pub
-```
-
-6. SSH your server with signed key.
-
-```shell
-ssh -i signed-key.pub -i ~/.ssh/id_rsa root@1.1.1.1
+bw-ssh add --name my-server-1 --private-key $PK_PATH --public-key $PUB_KEY
 ```
 
 ## Improvements to be made
 
 * 100% test coverage.
 * Better covering for other features.
+
