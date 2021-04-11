@@ -1,5 +1,5 @@
 <h1 align="center">
-Vault Auto Unseal
+Vault Signed SSH Certificate Manager
 </h1>
 
 <p align="center">
