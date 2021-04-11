@@ -2,7 +2,9 @@ package certificate
 
 import (
 	"fmt"
+
 	"github.com/omegion/vault-ssh/pkg/vault"
+
 	"github.com/spf13/cobra"
 )
 

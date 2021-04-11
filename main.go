@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/omegion/vault-ssh/cmd/certificate"
-	"github.com/omegion/vault-ssh/cmd/role"
 	"os"
 
 	"github.com/omegion/vault-ssh/cmd"
+	"github.com/omegion/vault-ssh/cmd/certificate"
+	"github.com/omegion/vault-ssh/cmd/role"
 
 	"github.com/spf13/cobra"
 )

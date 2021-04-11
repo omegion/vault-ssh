@@ -28,7 +28,6 @@ Flags:
   -h, --help   help for vault-ssh
 
 Use "vault-ssh [command] --help" for more information about a command.
-
 ```
 
 ## Requirements
@@ -84,4 +83,3 @@ ssh -i signed-key.pub -i ~/.ssh/id_rsa root@1.1.1.1
 
 * 100% test coverage.
 * Better covering for other features.
-

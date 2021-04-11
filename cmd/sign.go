@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/omegion/vault-ssh/pkg/vault"
-	"github.com/spf13/cobra"
 	"io/ioutil"
+
+	"github.com/omegion/vault-ssh/pkg/vault"
+
+	"github.com/spf13/cobra"
 )
 
 // Sign signs given public key with SSH engine and role.

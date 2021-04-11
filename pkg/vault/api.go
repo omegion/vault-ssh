@@ -9,12 +9,13 @@ import (
 )
 
 const (
-	tlsSkipVerify            = true
-	maxRetries               = 3
-	timeout                  = 15 * time.Second
-	SSHEngineDefaultName     = "ssh-test"
+	tlsSkipVerify = true
+	maxRetries    = 3
+	timeout       = 15 * time.Second
+	// SSHEngineDefaultName Default engine name.
+	SSHEngineDefaultName = "ssh-test"
+	// SSHEngineDefaultRoleName Default role name.
 	SSHEngineDefaultRoleName = "general"
-	SignedKeyDefaultPath     = "signed-key.pub"
 )
 
 // API is main struct of Vault.
@@ -74,12 +75,11 @@ func (a API) Unseal(shard string) (api.SealStatusResponse, error) {
 func (a API) EnableSSHEngine(engineName string) error {
 	options := api.MountInput{Type: "ssh"}
 
-	path := fmt.Sprintf("%s", engineName)
-
-	err := a.Client.Sys().Mount(path, &options)
+	err := a.Client.Sys().Mount(engineName, &options)
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
