@@ -5,7 +5,7 @@ import (
 )
 
 func Test_GetCommand(t *testing.T) {
-	_, err := executeCommand(Sign(), "--public-key=/Users/hakan/.ssh/id_rsa.pub")
+	_, err := executeCommand(Version())
 	if err != nil {
 		t.Errorf("Command Error: %v", err)
 	}
