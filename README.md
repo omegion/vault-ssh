@@ -47,34 +47,34 @@ It's a tool to create Signed SSH Certificates with Vault.
 vault-ssh enable --path my-ssh-signer
 ```
 
-1. Generate a Certificate CA for the engine.
+2. Generate a Certificate CA for the engine.
 
 ```shell
-./vault-ssh certificate create --engine my-ssh-signer
+vault-ssh certificate create --engine my-ssh-signer
 ```
 
-1. Read created certificate to put on your server.
+3. Read created certificate to put on your server.
 
 ```shell
-./vault-ssh certificate read --engine my-ssh-signer
+vault-ssh certificate read --engine my-ssh-signer
 ```
 
-1. Create a role for the engine.
+4. Create a role for the engine.
 
 ```shell
-./vault-ssh role create --name omegion --engine my-ssh-signer
+vault-ssh role create --name omegion --engine my-ssh-signer
 ```
 
-1. Sign your public key with a role. The generated file will be written in `signed-key.pub` in this example.
+5. Sign your public key with a role. The generated file will be written in `signed-key.pub` in this example.
 
 ```shell
-./vault-ssh sign \
+vault-ssh sign \
   --role omegion \
   --engine my-ssh-signer \
   --public-key ~/.ssh/id_rsa.pub > signed-key.pub
 ```
 
-1. SSH your server with signed key.
+6. SSH your server with signed key.
 
 ```shell
 ssh -i signed-key.pub -i ~/.ssh/id_rsa root@1.1.1.1
