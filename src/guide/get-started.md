@@ -2,35 +2,34 @@
 
 ## Prerequisites
 
-Bitwarden SSH Manager uses `bw` CLI command in background. So, you will need to install it and login to be able to use the SSH Manager.
-
-- [Bitwarden CLI](https://bitwarden.com/help/article/cli/#quick-start)
+- Vault Server
 
 ## Install
 
 ```shell
-go get -u github.com/omegion/bw-ssh
+go get -u github.com/omegion/vault-ssh
 ```
 
-This will install `bw-ssh` binary to your `GOPATH`.
+This will install `vault-ssh` binary to your `GOPATH`.
 
 Let's verify that the binary has installed successfully.
 
 ```shell
-❯ bw-ssh --help            
-CLI command to manage SSH keys stored on Bitwarden
+CLI command to manage SSH connections with Vault
 
 Usage:
-  bw-ssh [command]
+  vault-ssh [command]
 
 Available Commands:
-  add         Add SSH key to Bitwarden.
-  get         Get SSH key from Bitwarden.
+  certificate Manages certificates for SSH engine.
+  enable      Enables SSH Engine.
   help        Help about any command
+  role        Manages roles for SSH engine.
+  sign        Signs given public key with SSH engine and role.
   version     Print the version/build number
 
 Flags:
-  -h, --help   help for bw-ssh
+  -h, --help   help for vault-ssh
 
-Use "bw-ssh [command] --help" for more information about a command.
+Use "vault-ssh [command] --help" for more information about a command.
 ```

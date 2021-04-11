@@ -1,57 +1,44 @@
 # Quick Start
 
-Bitwarden SSH Manager is written in Golang. It is small and very fast tool. You can find detailed examples how to use
-it.
+Vault is popular secret manager from Hashicorp.
 
-## Generate Test SSH Key pair
+## Create SSH engine and role.
 
-Before using your SSH keys to store in Bitwarden, let's create dummy key and test with it.
-
-1. Open Terminal.
-1. Paste the command below
+1. Enable a SSH engine in your Vault.
 
 ```shell
-ssh-keygen -t ed25519 
+vault-ssh enable --path my-ssh-signer
 ```
 
-1. When you're prompted to "Enter a file in which to save the key," enter `test`.
-1. At the prompt, do not type a secure passphrase.
-
-## Add SSH Key
-
-Let's be sure that we have previously created keys:
+2. Generate a Certificate CA for the engine.
 
 ```shell
-❯ ls -l test*
--rw-------  1 X  staff  432 Mar 30 08:38 test
--rw-r--r--  1 X  staff  112 Mar 30 08:38 test.pub
+vault-ssh certificate create --engine my-ssh-signer
 ```
 
-Now we can add them to Bitwarden.
+3. Read created certificate to put on your server.
 
 ```shell
-bw-ssh add --name test --private-key test --public-key test.pub
+vault-ssh certificate read --engine my-ssh-signer
 ```
 
-## Get SSH Key
-
-Once we have SSH key pair on Bitwarden, let's get them to our local machine.
+4. Create a role for the engine.
 
 ```shell
-❯ bw-ssh get --name test
-SSH Key test added.
+vault-ssh role create --name omegion --engine my-ssh-signer
 ```
 
-Let's check `~/.ssh/keys` folder if our keys are added.
+5. Sign your public key with a role. The generated file will be written in `signed-key.pub` in this example.
 
 ```shell
-❯ ls -l ~/.ssh/keys/
--rw-------  1 X  staff   432 Mar 30 11:05 test
--rw-------  1 X  staff   112 Mar 30 11:05 test.pub
+vault-ssh sign \
+  --role omegion \
+  --engine my-ssh-signer \
+  --public-key ~/.ssh/id_rsa.pub > signed-key.pub
 ```
 
-## Session Duration
+6. SSH your server with signed key.
 
-After a login with Bitwarden CLI tool, it will return a `session key` that you will need to define it as environment
-variable. Otherwise it will keep asking you to enter your credentials all the time. You can read for more info
-at [Bitwarden documentation](https://bitwarden.com/help/article/cli/#environment-variable).
+```shell
+ssh -i signed-key.pub -i ~/.ssh/id_rsa root@1.1.1.1
+```

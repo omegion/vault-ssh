@@ -1,23 +1,23 @@
 # Introduction
 
-Bitwarden is the most trusted open source password manager. It also allows us to store secure notes securely.
-
-SSH Manager uses this feature to store your SSH keys on Bitwarden. It comes with a CLI looking with easy use.
+Vault is popular secret manager from Hashicorp.
 
 ```shell
-CLI command to manage SSH keys stored on Bitwarden
+CLI command to manage SSH connections with Vault
 
 Usage:
-  bw-ssh [command]
+  vault-ssh [command]
 
 Available Commands:
-  add         Add SSH key to Bitwarden.
-  get         Get SSH key from Bitwarden.
+  certificate Manages certificates for SSH engine.
+  enable      Enables SSH Engine.
   help        Help about any command
+  role        Manages roles for SSH engine.
+  sign        Signs given public key with SSH engine and role.
   version     Print the version/build number
 
 Flags:
-  -h, --help   help for bw-ssh
+  -h, --help   help for vault-ssh
 
-Use "bw-ssh [command] --help" for more information about a command.
+Use "vault-ssh [command] --help" for more information about a command.
 ```
