@@ -19,3 +19,6 @@ dist
 
 # IDE
 .idea
+
+# Javascript
+node_modules

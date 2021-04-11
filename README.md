@@ -3,6 +3,12 @@ Vault Signed SSH Certificate Manager
 </h1>
 
 <p align="center">
+  <a href="https://vault-ssh.omegion.dev" target="_blank">
+    <img width="180" src="https://vault-ssh.omegion.dev/img/logo.svg" alt="logo">
+  </a>
+</p>
+
+<p align="center">
     <img src="https://img.shields.io/github/workflow/status/omegion/vault-ssh/Code%20Check" alt="Check"></a>
     <img src="https://coveralls.io/repos/github/omegion/vault-ssh/badge.svg?branch=master" alt="Coverall"></a>
     <img src="https://goreportcard.com/badge/github.com/omegion/vault-ssh" alt="Report"></a>
