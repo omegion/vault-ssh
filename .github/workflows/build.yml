@@ -17,7 +17,8 @@ jobs:
         uses: hashicorp/vault-action@v2.1.2
         with:
           url: ${{ secrets.VAULT_ADDR }}
-          token: ${{ secrets.VAULT_TOKEN }}
+          method: github
+          githubToken: ${{ secrets.GT_VAULT_AUTH_TOKEN }}
           secrets: |
             github/data/token registry_write | GITHUB_REGISTRY_TOKEN ;
 
