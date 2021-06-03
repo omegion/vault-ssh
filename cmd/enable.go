@@ -8,11 +8,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// setupAddCommand sets default flags.
-func setupGetCommand(cmd *cobra.Command) {
-	cmd.Flags().String("path", vault.SSHEngineDefaultName, "SSH engine path")
-}
-
 // Enable enables SSH engine.
 func Enable() *cobra.Command {
 	cmd := &cobra.Command{
@@ -39,7 +34,7 @@ func Enable() *cobra.Command {
 		},
 	}
 
-	setupGetCommand(cmd)
+	cmd.Flags().String("path", vault.SSHEngineDefaultName, "SSH engine path")
 
 	return cmd
 }
