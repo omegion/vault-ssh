@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/omegion/vault-ssh/pkg/vault"
+	"github.com/omegion/vault-ssh/internal/vault"
 
 	"github.com/spf13/cobra"
 )
@@ -26,7 +26,9 @@ func Enable() *cobra.Command {
 				return err
 			}
 
-			err = api.EnableSSHEngine(path)
+			controller := vault.NewController(api)
+
+			err = controller.EnableSSHEngine(path)
 			if err != nil {
 				return err
 			}

@@ -3,7 +3,7 @@ package role
 import (
 	"fmt"
 
-	"github.com/omegion/vault-ssh/pkg/vault"
+	"github.com/omegion/vault-ssh/internal/vault"
 
 	"github.com/spf13/cobra"
 )
@@ -22,7 +22,9 @@ func Create() *cobra.Command {
 				return err
 			}
 
-			err = api.CreateRole(engineName, roleName)
+			controller := vault.NewController(api)
+
+			err = controller.CreateRole(engineName, roleName)
 			if err != nil {
 				return err
 			}

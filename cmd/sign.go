@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/omegion/vault-ssh/pkg/vault"
+	"github.com/omegion/vault-ssh/internal/vault"
 
 	"github.com/spf13/cobra"
 )
@@ -29,7 +29,9 @@ func Sign() *cobra.Command {
 				return err
 			}
 
-			key, err := api.Sign(engineName, roleName, publicKey)
+			controller := vault.NewController(api)
+
+			key, err := controller.Sign(engineName, roleName, publicKey)
 			if err != nil {
 				return err
 			}
