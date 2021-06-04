@@ -4,7 +4,6 @@ import (
 	"github.com/omegion/vault-ssh/internal/client"
 	"github.com/omegion/vault-ssh/internal/vault"
 	log "github.com/sirupsen/logrus"
-
 	"github.com/spf13/cobra"
 )
 

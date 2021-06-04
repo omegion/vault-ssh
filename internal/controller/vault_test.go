@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/golang/mock/gomock"
 	vaultAPI "github.com/hashicorp/vault/api"
 	"github.com/omegion/vault-ssh/internal/vault/mocks"
-
-	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )
 

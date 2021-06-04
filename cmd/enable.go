@@ -4,9 +4,8 @@ import (
 	"fmt"
 
 	"github.com/omegion/vault-ssh/internal/client"
-
 	"github.com/omegion/vault-ssh/internal/vault"
-
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -26,12 +25,11 @@ func Enable() *cobra.Command {
 func enableSSHEngineE(c client.Interface, cmd *cobra.Command, args []string) error {
 	path, _ := cmd.Flags().GetString("path")
 
-	err := c.EnableSSHEngine(path)
-	if err != nil {
+	if err := c.EnableSSHEngine(path); err != nil {
 		return err
 	}
 
-	fmt.Printf("\"%s\" SSH Engine enabled.\n", path)
+	log.Infoln(fmt.Sprintf("\"%s\" SSH Engine enabled.", path))
 
 	return nil
 }

@@ -3,7 +3,6 @@ package certificate
 import (
 	"github.com/omegion/vault-ssh/internal/client"
 	"github.com/omegion/vault-ssh/internal/vault"
-
 	"github.com/spf13/cobra"
 )
 

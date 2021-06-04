@@ -4,12 +4,11 @@ import (
 	"os"
 	"testing"
 
-	hashivault "github.com/hashicorp/vault/vault"
-
 	"github.com/hashicorp/vault/api"
 	"github.com/hashicorp/vault/builtin/logical/ssh"
 	"github.com/hashicorp/vault/http"
 	"github.com/hashicorp/vault/sdk/logical"
+	hashivault "github.com/hashicorp/vault/vault"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
