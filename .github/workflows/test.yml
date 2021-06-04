@@ -1,7 +1,6 @@
-name: Code Check
+name: Test
 
 on:
-  push:
   pull_request:
 
 jobs:
@@ -21,6 +20,7 @@ jobs:
       - name: Get dependencies
         run: |
           go get -v -t -d ./...
+
       - name: go test
         run: go test -v -covermode=count -coverprofile=coverage.out ./...
 
@@ -32,6 +32,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: coverage.lcov
+          flag-name: Unit Test
 
   vet:
     name: go vet and lint
@@ -66,4 +67,4 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v2
         with:
-          version: v1.37.0
+          version: v1.40.1

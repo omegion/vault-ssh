@@ -61,7 +61,7 @@ vault-ssh certificate create --engine my-ssh-signer
 3. Read created certificate to put on your server.
 
 ```shell
-vault-ssh certificate read --engine my-ssh-signer
+vault-ssh certificate get --engine my-ssh-signer
 ```
 
 4. Create a role for the engine.
