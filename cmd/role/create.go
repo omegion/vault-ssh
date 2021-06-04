@@ -1,8 +1,10 @@
 package role
 
 import (
-	"github.com/omegion/vault-ssh/internal/controller"
-	"github.com/omegion/vault-ssh/internal/vault"
+	"fmt"
+
+	"github.com/omegion/vault-ssh/pkg/vault"
+
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +22,14 @@ func Create() *cobra.Command {
 				return err
 			}
 
-			return controller.NewController(api).CreateRole(engineName, roleName)
+			err = api.CreateRole(engineName, roleName)
+			if err != nil {
+				return err
+			}
+
+			fmt.Printf("\"%s\" created for SSH Engine \"%s\" enabled.\n", roleName, engineName)
+
+			return nil
 		},
 	}
 

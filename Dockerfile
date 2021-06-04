@@ -1,10 +1,7 @@
 ARG GO_VERSION=1.16-alpine3.12
 ARG FROM_IMAGE=alpine:3.12
 
-FROM --platform=${BUILDPLATFORM} golang:${GO_VERSION} AS builder
-
-ARG TARGETOS
-ARG TARGETARCH
+FROM golang:${GO_VERSION} AS builder
 
 LABEL org.opencontainers.image.source="https://github.com/omegion/vault-ssh"
 
@@ -13,15 +10,15 @@ WORKDIR /app
 COPY ./ /app
 
 RUN apk update && \
-  apk add ca-certificates gettext git make && \
+  apk add ca-certificates gettext git make curl unzip && \
   rm -rf /tmp/* && \
   rm -rf /var/cache/apk/* && \
   rm -rf /var/tmp/*
 
-RUN make build TARGETOS=$TARGETOS TARGETARCH=$TARGETARCH
+RUN make build-for-container
 
 FROM ${FROM_IMAGE}
 
-COPY --from=builder /app/dist/vault-ssh /bin/vault-ssh
+COPY --from=builder /app/dist/vault-ssh-linux /bin/vault-ssh
 
 ENTRYPOINT ["vault-ssh"]
