@@ -3,7 +3,7 @@ package cmd
 import (
 	"io/ioutil"
 
-	"github.com/omegion/vault-ssh/internal/client"
+	"github.com/omegion/vault-ssh/internal/controller"
 	"github.com/omegion/vault-ssh/internal/vault"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -35,30 +35,33 @@ func Sign() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "sign",
 		Short: "Signs given public key with SSH engine and role.",
-		RunE:  client.With(signE),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			engineName, _ := cmd.Flags().GetString("engine")
+			roleName, _ := cmd.Flags().GetString("role")
+			publicKeyPath, _ := cmd.Flags().GetString("public-key")
+
+			buffer, err := ioutil.ReadFile(publicKeyPath)
+			if err != nil {
+				return err
+			}
+
+			api, err := vault.NewAPI()
+			if err != nil {
+				return err
+			}
+
+			publicKey, err := controller.NewController(api).Sign(engineName, roleName, buffer)
+			if err != nil {
+				return err
+			}
+
+			log.Infoln(publicKey)
+
+			return nil
+		},
 	}
 
 	setupGetCommand(cmd)
 
 	return cmd
-}
-
-func signE(c client.Interface, cmd *cobra.Command, args []string) error {
-	engineName, _ := cmd.Flags().GetString("engine")
-	roleName, _ := cmd.Flags().GetString("role")
-	publicKeyPath, _ := cmd.Flags().GetString("public-key")
-
-	buffer, err := ioutil.ReadFile(publicKeyPath)
-	if err != nil {
-		return err
-	}
-
-	publicKey, err := c.Sign(engineName, roleName, buffer)
-	if err != nil {
-		return err
-	}
-
-	log.Infoln(publicKey)
-
-	return nil
 }

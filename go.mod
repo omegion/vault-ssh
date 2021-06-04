@@ -16,6 +16,7 @@ require (
 	github.com/klauspost/compress v1.11.0 // indirect
 	github.com/lib/pq v1.9.0 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
+	github.com/omegion/cobra-commander v0.1.0
 	github.com/pierrec/lz4 v2.6.0+incompatible // indirect
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.1.3
