@@ -3,6 +3,7 @@ package cmd
 import (
 	"github.com/omegion/vault-ssh/cmd/certificate"
 	"github.com/omegion/vault-ssh/cmd/role"
+	"github.com/omegion/vault-ssh/internal/client"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -62,4 +63,15 @@ func (c *Commander) Setup() {
 	c.Root.AddCommand(Sign())
 	c.Root.AddCommand(certificate.Certificate())
 	c.Root.AddCommand(role.Role())
+}
+
+// WithClient is a wrapper for testing.
+func (c *Commander) WithClient(
+	fn func(c client.Interface, cmd *cobra.Command, args []string) error,
+) func(cmd *cobra.Command, args []string) error {
+	return func(cmd *cobra.Command, args []string) error {
+		c := client.NewClient()
+
+		return fn(c, cmd, args)
+	}
 }

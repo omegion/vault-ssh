@@ -1,18 +1,19 @@
-package vault
+package controller
 
 import (
 	"fmt"
 
 	"github.com/hashicorp/vault/api"
+	"github.com/omegion/vault-ssh/internal/vault"
 )
 
 // Controller is main struct of Vault.
 type Controller struct {
-	API APIInterface
+	API vault.APIInterface
 }
 
 // NewController is a factory to create a Controller.
-func NewController(api APIInterface) *Controller {
+func NewController(api vault.APIInterface) *Controller {
 	return &Controller{API: api}
 }
 
@@ -50,7 +51,7 @@ func (c Controller) GetCACertificate(engineName string) (string, error) {
 		return fmt.Sprintf("%v", publicKey), nil
 	}
 
-	return "", SecretDataNotFound{
+	return "", vault.SecretDataNotFound{
 		Key:  "public_key",
 		Path: path,
 	}
@@ -81,9 +82,9 @@ func (c Controller) CreateRole(engineName, roleName string) error {
 }
 
 // Sign signs given public key with SSH engine and role.
-func (c Controller) Sign(engineName, roleName, publicKey string) (string, error) {
+func (c Controller) Sign(engineName, roleName string, publicKey []byte) (string, error) {
 	options := map[string]interface{}{
-		"public_key": publicKey,
+		"public_key": string(publicKey),
 	}
 
 	path := fmt.Sprintf("%s/sign/%s", engineName, roleName)
@@ -97,7 +98,7 @@ func (c Controller) Sign(engineName, roleName, publicKey string) (string, error)
 		return fmt.Sprintf("%v", signedKey), nil
 	}
 
-	return "", SecretDataNotFound{
+	return "", vault.SecretDataNotFound{
 		Key:  "signed_key",
 		Path: path,
 	}

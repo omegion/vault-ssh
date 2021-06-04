@@ -3,6 +3,8 @@ package cmd
 import (
 	"testing"
 
+	"github.com/omegion/vault-ssh/internal/client"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
@@ -39,4 +41,16 @@ func TestCommander_Setup(t *testing.T) {
 	assert.Equal(t, "info", commander.LogLevel)
 	assert.Equal(t, "info", log.GetLevel().String())
 	assert.Equal(t, "info", expectedLogLevelFlag)
+}
+
+func TestWithClient(t *testing.T) {
+	commander := NewCommander()
+	commander.Setup()
+
+	fn := commander.WithClient(func(c client.Interface, cmd *cobra.Command, args []string) error {
+		return nil
+	})
+
+	err := fn(&cobra.Command{}, []string{})
+	assert.Equal(t, nil, err)
 }

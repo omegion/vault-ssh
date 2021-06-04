@@ -1,12 +1,11 @@
-package vault
+package controller
 
 import (
 	"errors"
 	"fmt"
 	"testing"
 
-	vaultApi "github.com/hashicorp/vault/api"
-
+	vaultAPI "github.com/hashicorp/vault/api"
 	"github.com/omegion/vault-ssh/internal/vault/mocks"
 
 	"github.com/golang/mock/gomock"
@@ -35,7 +34,7 @@ func TestEnableSSHEngine(t *testing.T) {
 
 	api.EXPECT().Mount(
 		expectedPath,
-		&vaultApi.MountInput{Type: "ssh"},
+		&vaultAPI.MountInput{Type: "ssh"},
 	).Return(nil)
 
 	controller := NewController(api)
@@ -53,7 +52,7 @@ func TestCreateCACertificate(t *testing.T) {
 		"generate_signing_key": true,
 	}
 
-	secret := vaultApi.Secret{}
+	secret := vaultAPI.Secret{}
 
 	api.EXPECT().Write(vaultConfigPath, options).Return(&secret, nil)
 
@@ -72,7 +71,7 @@ func TestCreateCACertificate_Failure(t *testing.T) {
 		"generate_signing_key": true,
 	}
 
-	secret := vaultApi.Secret{}
+	secret := vaultAPI.Secret{}
 
 	api.EXPECT().Write(vaultConfigPath, options).Return(&secret, errors.New("custom-error"))
 
@@ -89,7 +88,7 @@ func TestGetCACertificate(t *testing.T) {
 
 	expectedPublicKey := "X"
 
-	secret := vaultApi.Secret{Data: map[string]interface{}{"public_key": expectedPublicKey}}
+	secret := vaultAPI.Secret{Data: map[string]interface{}{"public_key": expectedPublicKey}}
 
 	api.EXPECT().Read(vaultConfigPath).Return(&secret, nil)
 
@@ -105,7 +104,7 @@ func TestGetCACertificate_Failure(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	api := mocks.NewMockAPIInterface(ctrl)
 
-	api.EXPECT().Read(vaultConfigPath).Return(&vaultApi.Secret{}, errors.New("custom-error"))
+	api.EXPECT().Read(vaultConfigPath).Return(&vaultAPI.Secret{}, errors.New("custom-error"))
 
 	controller := NewController(api)
 
@@ -118,7 +117,7 @@ func TestGetCACertificate_PublicKeyNotFound(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	api := mocks.NewMockAPIInterface(ctrl)
 
-	api.EXPECT().Read(vaultConfigPath).Return(&vaultApi.Secret{}, nil)
+	api.EXPECT().Read(vaultConfigPath).Return(&vaultAPI.Secret{}, nil)
 
 	controller := NewController(api)
 
@@ -145,7 +144,7 @@ func TestCreateRole(t *testing.T) {
 		"ttl":          "1m0s",
 	}
 
-	api.EXPECT().Write(path, options).Return(&vaultApi.Secret{}, nil)
+	api.EXPECT().Write(path, options).Return(&vaultAPI.Secret{}, nil)
 
 	controller := NewController(api)
 
@@ -185,14 +184,14 @@ func TestSign(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	api := mocks.NewMockAPIInterface(ctrl)
 
-	expectedPublicKey := "X"
+	expectedPublicKey := []byte("X")
 	expectedSignedKey := "Y"
 
 	options := map[string]interface{}{
-		"public_key": expectedPublicKey,
+		"public_key": string(expectedPublicKey),
 	}
 
-	secret := vaultApi.Secret{Data: map[string]interface{}{"signed_key": expectedSignedKey}}
+	secret := vaultAPI.Secret{Data: map[string]interface{}{"signed_key": expectedSignedKey}}
 
 	api.EXPECT().Write(vaultSignPath, options).Return(&secret, nil)
 
@@ -208,13 +207,13 @@ func TestSign_Write_Failure(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	api := mocks.NewMockAPIInterface(ctrl)
 
-	expectedPublicKey := "X"
+	expectedPublicKey := []byte("X")
 
 	options := map[string]interface{}{
-		"public_key": expectedPublicKey,
+		"public_key": string(expectedPublicKey),
 	}
 
-	api.EXPECT().Write(vaultSignPath, options).Return(&vaultApi.Secret{}, errors.New("custom-error"))
+	api.EXPECT().Write(vaultSignPath, options).Return(&vaultAPI.Secret{}, errors.New("custom-error"))
 
 	controller := NewController(api)
 
@@ -227,13 +226,13 @@ func TestSign_SecretData_Failure(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	api := mocks.NewMockAPIInterface(ctrl)
 
-	expectedPublicKey := "X"
+	expectedPublicKey := []byte("X")
 
 	options := map[string]interface{}{
-		"public_key": expectedPublicKey,
+		"public_key": string(expectedPublicKey),
 	}
 
-	secret := vaultApi.Secret{Data: map[string]interface{}{}}
+	secret := vaultAPI.Secret{Data: map[string]interface{}{}}
 
 	api.EXPECT().Write(vaultSignPath, options).Return(&secret, nil)
 
