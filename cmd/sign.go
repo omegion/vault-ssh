@@ -1,11 +1,11 @@
 package cmd
 
 import (
+	"fmt"
 	"io/ioutil"
 
 	"github.com/omegion/vault-ssh/internal/controller"
 	"github.com/omegion/vault-ssh/internal/vault"
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -55,7 +55,8 @@ func Sign() *cobra.Command {
 				return err
 			}
 
-			log.Infoln(publicKey)
+			//nolint:forbidigo // make an exception.
+			fmt.Println(publicKey)
 
 			return nil
 		},
