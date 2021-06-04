@@ -1,9 +1,10 @@
 package certificate
 
 import (
-	"github.com/omegion/vault-ssh/internal/controller"
-	"github.com/omegion/vault-ssh/internal/vault"
-	log "github.com/sirupsen/logrus"
+	"fmt"
+
+	"github.com/omegion/vault-ssh/pkg/vault"
+
 	"github.com/spf13/cobra"
 )
 
@@ -20,12 +21,12 @@ func Get() *cobra.Command {
 				return err
 			}
 
-			publicKey, err := controller.NewController(api).GetCACertificate(engineName)
+			publicKey, err := api.GetCACertificate(engineName)
 			if err != nil {
 				return err
 			}
 
-			log.Infoln(publicKey)
+			fmt.Printf("%s\n", publicKey)
 
 			return nil
 		},

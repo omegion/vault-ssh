@@ -1,10 +1,17 @@
 package cmd
 
 import (
-	"github.com/omegion/vault-ssh/internal/controller"
-	"github.com/omegion/vault-ssh/internal/vault"
+	"fmt"
+
+	"github.com/omegion/vault-ssh/pkg/vault"
+
 	"github.com/spf13/cobra"
 )
+
+// setupAddCommand sets default flags.
+func setupGetCommand(cmd *cobra.Command) {
+	cmd.Flags().String("path", vault.SSHEngineDefaultName, "SSH engine path")
+}
 
 // Enable enables SSH engine.
 func Enable() *cobra.Command {
@@ -19,11 +26,18 @@ func Enable() *cobra.Command {
 				return err
 			}
 
-			return controller.NewController(api).EnableSSHEngine(path)
+			err = api.EnableSSHEngine(path)
+			if err != nil {
+				return err
+			}
+
+			fmt.Printf("\"%s\" SSH Engine enabled.\n", path)
+
+			return nil
 		},
 	}
 
-	cmd.Flags().String("path", vault.SSHEngineDefaultName, "SSH engine path")
+	setupGetCommand(cmd)
 
 	return cmd
 }
