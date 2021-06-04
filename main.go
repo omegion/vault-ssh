@@ -3,32 +3,33 @@ package main
 import (
 	"os"
 
-	commander "github.com/omegion/cobra-commander"
 	"github.com/omegion/vault-ssh/cmd"
 	"github.com/omegion/vault-ssh/cmd/certificate"
 	"github.com/omegion/vault-ssh/cmd/role"
+
 	"github.com/spf13/cobra"
 )
 
-func main() {
+// RootCommand is the main entry point of this application.
+func RootCommand() *cobra.Command {
 	root := &cobra.Command{
 		Use:          "vault-ssh",
 		Short:        "Vault SSH Manager",
-		Long:         "CLI command to manage SSH connections with Vault.",
+		Long:         "CLI command to manage SSH connections with Vault",
 		SilenceUsage: true,
 	}
 
-	c := commander.NewCommander(root).
-		SetCommand(
-			cmd.Version(),
-			cmd.Enable(),
-			cmd.Sign(),
-			certificate.Certificate(),
-			role.Role(),
-		).
-		Init()
+	root.AddCommand(cmd.Version())
+	root.AddCommand(cmd.Enable())
+	root.AddCommand(cmd.Sign())
+	root.AddCommand(certificate.Certificate())
+	root.AddCommand(role.Role())
 
-	if err := c.Execute(); err != nil {
+	return root
+}
+
+func main() {
+	if err := RootCommand().Execute(); err != nil {
 		os.Exit(1)
 	}
 }
